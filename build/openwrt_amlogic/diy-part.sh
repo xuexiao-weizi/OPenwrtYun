@@ -13,7 +13,7 @@ cat >$NETIP <<-EOF
 uci set network.lan.ipaddr='192.168.1.3'                                    # IPv4 地址(openwrt后台地址)
 uci set network.lan.netmask='255.255.255.0'                                 # IPv4 子网掩码
 uci set network.lan.gateway='192.168.1.3'                                   # IPv4 网关
-uci set network.lan.broadcast='192.168.1.255'                               # IPv4 广播
+uci set network.lan.broadcast='192.168.1.3'                                 # IPv4 广播
 uci set network.lan.dns='114.114.114.114 223.5.5.5'                         # DNS(多个DNS要用空格分开)
 #uci set network.lan.delegate='0'                                            # 去掉LAN口使用内置的 IPv6 管理
 uci commit network                                                          # 不要删除跟注释,除非上面全部删除或注释掉了
@@ -26,6 +26,14 @@ EOF
 sed -i "s/OpenWrt /${Author} Compiled in $(TZ=UTC-8 date "+%Y.%m.%d") @ OpenWrt /g" $ZZZ          # 增加个性名字${Author}默认为你的github账号
 
 sed -i '/CYXluq4wUazHjmCDBCqXF/d' $ZZZ                                                            # 设置密码为空
+
+
+# 设置打包固件的机型，内核组合（可用内核是时时变化的,过老的内核就删除的，所以要选择什么内核请看说明）
+cat >$GITHUB_WORKSPACE/amlogic_openwrt <<-EOF
+amlogic_model=s905d
+amlogic_kernel=5.16.10_5.4.180 -a true
+rootfs_size=1200
+EOF
 
 
 # 修改插件名字
